@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:mysql://serveruywalky.mysql.database.azure.com:3306/project_uywalky?useSSL=true&requireSSL=true
+    username: carlitos
+    password: Pr0n4c3j2024$$i01
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+
+  servlet:
+    multipart:
+      max-request-size: 6MB
+      max-file-size: 6MB
+      enabled: true
+
+ruta:
+  almacenamiento:
+    imagenes: C:\IMG_SPRING
