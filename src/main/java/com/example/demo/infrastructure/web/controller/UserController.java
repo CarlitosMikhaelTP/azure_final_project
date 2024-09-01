@@ -44,6 +44,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
     }
+    // Agregando pequeña funcionalidad
 
     // ENDPOINT PARA ELIMINAR UN USUARIO POR SU ID
     @DeleteMapping("/delete/{userId}")
