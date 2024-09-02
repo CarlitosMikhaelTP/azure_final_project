@@ -23,3 +23,9 @@ spring:
 ruta:
   almacenamiento:
     imagenes: C:\IMG_SPRING
+
+    logging:
+      level:
+        org:
+          springframework:
+            security=DEBUG:
