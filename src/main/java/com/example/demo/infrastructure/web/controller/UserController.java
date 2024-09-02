@@ -14,7 +14,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/user")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "https://api-uywalky-htb2bpd4bkaqfvau.eastus-01.azurewebsites.net"})
+//@CrossOrigin(origins = {"http://localhost:3000", "https://api-uywalky-htb2bpd4bkaqfvau.eastus-01.azurewebsites.net"})
 public class UserController {
 
     private final UserService userService;
