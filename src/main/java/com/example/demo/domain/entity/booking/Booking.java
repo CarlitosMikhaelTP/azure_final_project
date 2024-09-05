@@ -1,5 +1,6 @@
 package com.example.demo.domain.entity.booking;
 
+import com.example.demo.domain.entity.chat.Room;
 import com.example.demo.domain.entity.walk.Walk;
 import com.example.demo.domain.entity.walker.Walker;
 import com.example.demo.domain.entity.owner.Owner;
@@ -73,5 +74,8 @@ public class Booking {
 
     @OneToOne(mappedBy = "bookingId", cascade = CascadeType.ALL)
     private Walk walk;
+
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
+    private Room room;
 
 }

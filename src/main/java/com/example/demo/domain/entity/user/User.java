@@ -1,5 +1,6 @@
 package com.example.demo.domain.entity.user;
 
+import com.example.demo.domain.entity.chat.Chat;
 import com.example.demo.domain.entity.walker.Walker;
 import com.example.demo.domain.entity.owner.Owner;
 import jakarta.persistence.*;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
 @Builder
@@ -82,6 +84,9 @@ public class User implements UserDetails {
     // En la clase User
     @OneToOne(mappedBy = "userId", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Owner owner;
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Chat> chatList;
 
     ///////// Implementando los métodos de la Interfaz User Details ////////////////////
     @Override

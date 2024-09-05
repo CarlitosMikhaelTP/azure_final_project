@@ -18,6 +18,5 @@ public class ProjectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectApplication.class, args);
 	}
-	// Configuración global para el manejo de tipos de contenido
 
 }
