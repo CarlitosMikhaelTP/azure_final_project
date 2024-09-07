@@ -28,6 +28,10 @@ public class Pet {
     private TypePet typePetId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bad_habit_id", nullable = false)
+    private BadHabits badHabits;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
 

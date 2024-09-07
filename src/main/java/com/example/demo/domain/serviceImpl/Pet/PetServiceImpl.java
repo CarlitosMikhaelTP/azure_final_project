@@ -1,13 +1,16 @@
 package com.example.demo.domain.serviceImpl.Pet;
 
+import com.example.demo.application.exceptions.PetExceptions.NotFound.BadHabitsNotFoundException;
 import com.example.demo.application.exceptions.PetExceptions.NotFound.PetNotFounException;
 import com.example.demo.application.exceptions.PetExceptions.NotFound.TypePetNotFoundException;
 import com.example.demo.application.exceptions.WalkerExceptions.NotFound.WalkerNotFoundException;
 import com.example.demo.application.exceptions.OwnerExceptions.NotFound.OwnerNotFoundException;
 import com.example.demo.application.service.PetService.PetService;
+import com.example.demo.domain.entity.pet.BadHabits;
 import com.example.demo.domain.entity.pet.Pet;
 import com.example.demo.domain.entity.pet.TypePet;
 import com.example.demo.domain.entity.owner.Owner;
+import com.example.demo.domain.repository.Pet.BadHabitsRepository;
 import com.example.demo.domain.repository.Pet.PetRepository;
 import com.example.demo.domain.repository.Owner.OwnerRepository;
 import com.example.demo.domain.repository.Pet.TypePetRepository;
@@ -28,6 +31,7 @@ public class PetServiceImpl implements PetService {
     private final OwnerRepository ownerRepository;
     private final PetRepository petRepository;
     private final TypePetRepository typePetRepository;
+    private final BadHabitsRepository badHabitsRepository;
     private final UploadFilesService uploadFilesService;
 
 
@@ -38,10 +42,12 @@ public class PetServiceImpl implements PetService {
                 .orElseThrow(() -> new OwnerNotFoundException("Id de dueño de mascota no encontrado"));
         TypePet typePet = typePetRepository.findById(petDTO.getTypePetId())
                 .orElseThrow(()-> new TypePetNotFoundException("Id del tipo de mascota no encontrado"));
-
+        BadHabits badHabits = badHabitsRepository.findById(petDTO.getBadHabits())
+                .orElseThrow(()-> new BadHabitsNotFoundException("Id del tipo de hábito no encontrado"));
         Pet pet = Pet.builder()
                 .owner(owner)
                 .typePetId(typePet)
+                .badHabits(badHabits)
                 .name(petDTO.getName())
                 .race(petDTO.getRace())
                 .weight(petDTO.getWeight())
@@ -62,15 +68,17 @@ public class PetServiceImpl implements PetService {
         return PetDTO.builder()
                 .id(Id)
                 .typePetId(IdTypeUser)
+                .badHabits(badHabits.getId())
                 .name(namePet)
                 .typerUserId(IdTypeUser)
                 .ownerId(IdOwner)
                 .userId(IdUser)
                 .nameOwner(NameOwner)
-                .race(petDTO.getRace())
-                .weight(petDTO.getWeight())
-                .age(petDTO.getAge())
-                .needs(petDTO.getNeeds())
+                .race(pet.getRace())
+                .weight(pet.getWeight())
+                .age(pet.getAge())
+                .needs(pet.getNeeds())
+                .nameBadHabit(pet.getBadHabits().getName())
                 .build();
     }
 
@@ -106,6 +114,11 @@ public class PetServiceImpl implements PetService {
         if (petDTO.getTypePetId() != null) {
             typePet = typePetRepository.findById(petDTO.getTypePetId())
                     .orElseThrow(() -> new TypePetNotFoundException("Id del tipo de mascota no encontrado"));
+        }
+        BadHabits badHabits = petExists.getBadHabits();
+        if (petDTO.getBadHabits() != null){
+            badHabits = badHabitsRepository.findById(petDTO.getBadHabits())
+                    .orElseThrow(()-> new BadHabitsNotFoundException("Id del tipo de hábitos de mascota no encontrado"));
         }
         // Verificando cada campo antes de actualziar
         if (petDTO.getName() != null){
@@ -144,6 +157,8 @@ public class PetServiceImpl implements PetService {
                 .nameOwner(petExists.getOwner().getUserId().getName())
                 .race(petExists.getRace())
                 .weight(petExists.getWeight())
+                .badHabits(petExists.getBadHabits().getId())
+                .nameBadHabit(petExists.getBadHabits().getName())
                 .age(petExists.getAge())
                 .needs(petExists.getNeeds())
                 .build();

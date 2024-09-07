@@ -24,6 +24,10 @@ public class PetDTO {
     @NotBlank(message = "El id del propietario no puede estar vacío")
     private Integer ownerId;
 
+    private Integer badHabits;
+
+    private String nameBadHabit;
+
     private String foto;
 
     @NotNull(message = "El nombre de la mascota no puede ser nula")
