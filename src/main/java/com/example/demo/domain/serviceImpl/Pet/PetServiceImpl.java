@@ -38,12 +38,14 @@ public class PetServiceImpl implements PetService {
     // Servicio para registrar Pet
     @Override
     public PetDTO registerPetService(PetDTO petDTO) {
+
         Owner owner = ownerRepository.findById(petDTO.getOwnerId())
                 .orElseThrow(() -> new OwnerNotFoundException("Id de dueño de mascota no encontrado"));
         TypePet typePet = typePetRepository.findById(petDTO.getTypePetId())
                 .orElseThrow(()-> new TypePetNotFoundException("Id del tipo de mascota no encontrado"));
         BadHabits badHabits = badHabitsRepository.findById(petDTO.getBadHabits())
                 .orElseThrow(()-> new BadHabitsNotFoundException("Id del tipo de hábito no encontrado"));
+
         Pet pet = Pet.builder()
                 .owner(owner)
                 .typePetId(typePet)
@@ -84,37 +86,43 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public void updateFotoPetService(Integer id, MultipartFile foto) throws Exception {
+
         Pet mascota = petRepository.findById(id)
                 .orElseThrow(() -> new WalkerNotFoundException("Mascota no encontrada"));
 
         try {
             String routeFoto = "directorio/mascotas/" + id + "/foto"; // Ruta donde se guardará la foto
             String answer = uploadFilesService.handleFileUpload(foto, routeFoto);
-
             // Actualizar el campo de la foto en la entidad Paseador
             mascota.setFoto(answer); // Guardar la ruta o identificador de la foto en la entidad
             petRepository.save(mascota);
+
         } catch (Exception e) {
             throw new Exception("Error al actualizar la foto de la mascota: " + e.getMessage());
         }
+
     }
 
     // Servicio para editar Pet
     @Override
     public PetDTO editPetService(Integer id, PetDTO petDTO) {
+
         Pet petExists = petRepository.findById(id)
                 .orElseThrow(() -> new PetNotFounException("Pet not found"));
 
         Owner owner = petExists.getOwner();
+
         if (petDTO.getOwnerId() != null) {
             owner = ownerRepository.findById(petDTO.getOwnerId())
                     .orElseThrow(() -> new OwnerNotFoundException("Id de propietario no encontrado"));
         }
+
         TypePet typePet = petExists.getTypePetId();
         if (petDTO.getTypePetId() != null) {
             typePet = typePetRepository.findById(petDTO.getTypePetId())
                     .orElseThrow(() -> new TypePetNotFoundException("Id del tipo de mascota no encontrado"));
         }
+
         BadHabits badHabits = petExists.getBadHabits();
         if (petDTO.getBadHabits() != null){
             badHabits = badHabitsRepository.findById(petDTO.getBadHabits())
