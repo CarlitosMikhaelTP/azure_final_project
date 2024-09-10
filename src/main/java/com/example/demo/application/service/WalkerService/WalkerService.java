@@ -1,5 +1,7 @@
 package com.example.demo.application.service.WalkerService;
 
+import com.example.demo.domain.entity.walker.Walker;
+import com.example.demo.infrastructure.web.projection.classBased.RatingWalkerDTO;
 import com.example.demo.infrastructure.web.projection.classBased.WalkerDTO;
 import com.example.demo.infrastructure.web.projection.interfaceBased.WalkerProjection;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +27,11 @@ public interface WalkerService {
 
     // DEFINIENDO método para eliminar un paseador por su ID
     boolean deleteWalkerByIdService(Integer id);
+
+    // Declarando método que se implementará en un servicio para que el dueño de la mascota califique al paseador
+    void addWalkerRating(RatingWalkerDTO ratingWalkerDTO);
+
+    void updateWalkerAverageRating(Walker walker);
 
 
 

@@ -2,21 +2,29 @@ package com.example.demo.domain.serviceImpl.Walker;
 
 import com.example.demo.application.exceptions.UserExceptions.exist.UserExistException;
 import com.example.demo.application.exceptions.WalkExceptions.Exists.WalkExistException;
+import com.example.demo.application.exceptions.WalkExceptions.NotFound.WalkNotFoundException;
 import com.example.demo.application.exceptions.WalkerExceptions.Exist.WalkerExistException;
 import com.example.demo.application.exceptions.WalkerExceptions.NotFound.CategoryNotFoundException;
 import com.example.demo.application.exceptions.WalkerExceptions.NotFound.WalkerNotFoundException;
 import com.example.demo.application.exceptions.UserExceptions.NotFound.UserNotFoundException;
 import com.example.demo.application.service.WalkerService.WalkerService;
+import com.example.demo.domain.entity.booking.Booking;
+import com.example.demo.domain.entity.walk.Walk;
 import com.example.demo.domain.entity.walker.Category;
+import com.example.demo.domain.entity.walker.RatingWalker;
 import com.example.demo.domain.entity.walker.Walker;
 import com.example.demo.domain.entity.user.User;
 import com.example.demo.domain.repository.Owner.OwnerRepository;
+import com.example.demo.domain.repository.Walk.WalkRepository;
 import com.example.demo.domain.repository.Walker.CategoryRepository;
+import com.example.demo.domain.repository.Walker.RatingWalkerRepository;
 import com.example.demo.domain.repository.Walker.WalkerRepository;
 import com.example.demo.domain.repository.User.UserRepository;
 
 import com.example.demo.application.service.FotoService.UploadFilesService;
+import com.example.demo.infrastructure.web.projection.classBased.RatingWalkerDTO;
 import com.example.demo.infrastructure.web.projection.classBased.WalkerDTO;
+import com.example.demo.infrastructure.web.projection.interfaceBased.RatingWalkerProjection;
 import com.example.demo.infrastructure.web.projection.interfaceBased.WalkerProjection;
 
 import lombok.RequiredArgsConstructor;
@@ -33,8 +41,10 @@ public class WalkerServiceImpl implements WalkerService {
 
     private final UserRepository userRepository;
     private final WalkerRepository walkerRepository;
+    private final WalkRepository walkRepository;
     private final CategoryRepository categoryRepository;
     private final UploadFilesService uploadFilesService;
+    private final RatingWalkerRepository ratingWalkerRepository;
 
 
     // Servicio para registrar Walker
@@ -211,6 +221,39 @@ public class WalkerServiceImpl implements WalkerService {
         return true;
 
     }
+
+    @Override
+    public void addWalkerRating(RatingWalkerDTO ratingWalkerDTO) {
+        Walker walker = walkerRepository.findById(ratingWalkerDTO.getIdWalker())
+                .orElseThrow(()-> new WalkerNotFoundException("Id del paseador no encontrado"));
+
+        Walk walk = walkRepository.findById(ratingWalkerDTO.getIdWalk())
+                .orElseThrow(() -> new WalkNotFoundException("Id del paseo asociado no encontrado"));
+
+        if (ratingWalkerRepository.existsByWalkId(walk)){
+            throw new WalkExistException("Esta cuenta ya realizó una calificación");
+        }
+        RatingWalker ratingWalker = new RatingWalker();
+        ratingWalker.setWalkerId(walker);
+        ratingWalker.setWalkId(walk);
+        ratingWalker.setRating(ratingWalkerDTO.getRating());
+        ratingWalkerRepository.save(ratingWalker);
+
+        updateWalkerAverageRating(walker);
+    }
+
+    @Override
+    public void updateWalkerAverageRating(Walker walker) {
+        List<RatingWalker> ratings = ratingWalkerRepository.findByWalkerId(walker);
+        double averageRating = ratings.stream()
+                .mapToInt(RatingWalker::getRating)
+                .average()
+                .orElse(0.0);
+
+        walker.setCalification((int) Math.round(averageRating));
+        walkerRepository.save(walker);
+    }
+
 
 }
 

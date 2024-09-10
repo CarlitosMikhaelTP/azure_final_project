@@ -3,6 +3,7 @@ package com.example.demo.domain.entity.walk;
 import com.example.demo.domain.entity.commentCalification.CommentCalification;
 import com.example.demo.domain.entity.booking.Booking;
 import com.example.demo.domain.entity.user.User;
+import com.example.demo.domain.entity.walker.RatingWalker;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,5 +69,8 @@ public class Walk {
     ///////// MAPEANDO LA CARDINALIDAD //////////////////////////
     @OneToMany(mappedBy = "walkId")
     private List<CommentCalification> CommentsCalifications;
+
+    @OneToOne(mappedBy = "walkId")
+    private RatingWalker ratingWalker;
 
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Builder
@@ -87,4 +88,7 @@ public class Walker {
 
     @OneToOne(mappedBy = "walkerId", cascade = CascadeType.ALL)
     private LocationWalker locationWalker;
+
+    @OneToMany(mappedBy = "walkerId", cascade = CascadeType.ALL)
+    private List<RatingWalker> ratingWalkerList;
 }

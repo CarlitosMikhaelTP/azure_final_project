@@ -3,8 +3,11 @@ package com.example.demo.infrastructure.web.controller;
 import com.example.demo.application.exceptions.WalkerExceptions.NotFound.WalkerNotFoundException;
 import com.example.demo.application.service.WalkerService.WalkerService;
 
+import com.example.demo.domain.entity.walker.RatingWalker;
 import com.example.demo.domain.entity.walker.Walker;
+import com.example.demo.domain.repository.Walker.RatingWalkerRepository;
 import com.example.demo.domain.repository.Walker.WalkerRepository;
+import com.example.demo.infrastructure.web.projection.classBased.RatingWalkerDTO;
 import com.example.demo.infrastructure.web.projection.classBased.WalkerDTO;
 import com.example.demo.infrastructure.web.projection.interfaceBased.WalkerProjection;
 
@@ -113,6 +116,13 @@ public class WalkerController {
             // Devolver un error o un recurso vacío en la respuesta
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Endpoint para agregar una calificación al paseador
+    @PostMapping("/rate")
+    public ResponseEntity<String> addRating(@RequestBody RatingWalkerDTO ratingDTO) {
+        walkerService.addWalkerRating(ratingDTO);
+        return ResponseEntity.ok("Rating added successfully");
     }
 
 }

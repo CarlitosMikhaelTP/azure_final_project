@@ -28,6 +28,7 @@ public class OwnerServiceImpl implements OwnerService {
     private final OwnerRepository ownerRepository;
     private final UploadFilesService uploadFilesService;
 
+
     // Servicio para registrar Owner
     @Override
     public OwnerDTO registerOwnerService (OwnerDTO ownerDTO) {
@@ -174,4 +175,5 @@ public class OwnerServiceImpl implements OwnerService {
             throw new Exception("Error al actualizar la foto del propietario: " + e.getMessage());
         }
     }
+
 }

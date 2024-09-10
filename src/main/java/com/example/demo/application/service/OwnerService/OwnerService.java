@@ -28,4 +28,6 @@ public interface OwnerService {
     List<OwnerProjection> getAvailableOwnersService();
 
     void updateFotoOwnerService(Integer id, MultipartFile foto) throws Exception;
+
+
 }
