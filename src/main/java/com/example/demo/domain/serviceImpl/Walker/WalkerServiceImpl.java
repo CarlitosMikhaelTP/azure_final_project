@@ -76,7 +76,8 @@ public class WalkerServiceImpl implements WalkerService {
                 .number_walk(walkerDTO.getNumber_walk())
                 .cost(walkerDTO.getCost())
                 .money(walkerDTO.getMoney())
-                .availability(walkerDTO.getAvailability())
+                // por defecto todo paseador que se registre tendrá esta casilla habilitada como false
+                .availability(false)
                 .categoryId(category)
                 .userId(user)
                 .build();

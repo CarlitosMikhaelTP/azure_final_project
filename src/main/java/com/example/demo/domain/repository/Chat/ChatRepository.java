@@ -26,4 +26,6 @@ public interface ChatRepository extends JpaRepository<Chat, Integer> {
     // En revisión
     boolean existsByRoom(Room room);
 
+    List<ChatProjection> findAllByRoomId(Integer room);
+
 }

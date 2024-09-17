@@ -24,7 +24,7 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/**")
+                .requestMatchers("/api/v1/**", "/ws/**", "/websocket-endpoint/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -34,6 +34,10 @@ public class SecurityConfiguration {
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // Permitir conexiones WebSocket
+        http.headers().frameOptions().disable();
+
         return http.build();
     }
 }

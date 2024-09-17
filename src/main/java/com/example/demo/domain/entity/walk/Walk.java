@@ -1,14 +1,12 @@
 package com.example.demo.domain.entity.walk;
 
+import com.example.demo.domain.entity.comment.CommentWalker;
 import com.example.demo.domain.entity.commentCalification.CommentCalification;
 import com.example.demo.domain.entity.booking.Booking;
 import com.example.demo.domain.entity.user.User;
 import com.example.demo.domain.entity.walker.RatingWalker;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalTime;
@@ -67,9 +65,15 @@ public class Walk {
     private User updatedBy;
 
     ///////// MAPEANDO LA CARDINALIDAD //////////////////////////
+    @ToString.Exclude
     @OneToMany(mappedBy = "walkId")
     private List<CommentCalification> CommentsCalifications;
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "walkId")
+    private List<CommentWalker> commentWalkerList;
+
+    @ToString.Exclude
     @OneToOne(mappedBy = "walkId")
     private RatingWalker ratingWalker;
 

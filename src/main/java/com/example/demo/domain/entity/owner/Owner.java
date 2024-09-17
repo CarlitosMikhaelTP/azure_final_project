@@ -3,10 +3,7 @@ package com.example.demo.domain.entity.owner;
 import com.example.demo.domain.entity.pet.Pet;
 import com.example.demo.domain.entity.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -70,13 +67,13 @@ public class Owner {
     ///////// MAPEO DE CARDINALIDADES ////////////////////////////
     //@OneToMany(mappedBy = "owner")
     //private List<Transaction> transacciones;
-
+    @ToString.Exclude
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pet> mascotas;
 
     //@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     //private List<Booking> booking;
-
+    @ToString.Exclude
     @OneToOne(mappedBy = "ownerId", cascade = CascadeType.ALL, orphanRemoval = true)
     private LocationOwner locationOwner;
 }

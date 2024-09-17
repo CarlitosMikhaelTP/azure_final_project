@@ -32,7 +32,10 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(()-> new WalkerNotFoundException("Id del paseador no encontrado"));
         Owner owner = ownerRepository.findById(bookingDTO.getOwnerId())
                 .orElseThrow(()-> new OwnerNotFoundException("Id del propietario no encontrado"));
-
+        // Lógica para verificar si el pasedor tiene activado su campo de "availability"
+        if (!walker.getAvailability()){ // evalua si el paseador está no disponible es decir si está como false, si está como false entonces lanza l aexcepción
+            throw new WalkerNotFoundException("El paseador no está habilitado para esta funcionalidad");
+        }
         Booking booking = Booking.builder()
                 .walkerId(walker)
                 .ownerId(owner)

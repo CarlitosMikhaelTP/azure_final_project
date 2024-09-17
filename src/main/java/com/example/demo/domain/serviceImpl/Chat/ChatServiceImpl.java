@@ -29,6 +29,7 @@ import com.example.demo.infrastructure.web.projection.classBased.ChatDTO;
 import com.example.demo.infrastructure.web.projection.interfaceBased.BookingProjection;
 import com.example.demo.infrastructure.web.projection.interfaceBased.ChatProjection;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -143,5 +144,13 @@ public class ChatServiceImpl implements ChatService {
         chatRepository.delete(chat);
         System.out.println("Se eliminó correctamente el chat");
         return true;
+    }
+
+    @Override
+    public List<ChatProjection> showAllChatByRoomIdService(Integer roomId) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new RoomNotFoundException("Id de la sala del chat no encontrado"));
+
+        return chatRepository.findAllByRoomId(roomId);
     }
 }

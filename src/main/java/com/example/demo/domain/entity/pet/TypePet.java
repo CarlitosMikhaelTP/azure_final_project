@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -42,7 +43,7 @@ public class TypePet {
     private User updatedBy;
 
     ///////// MAPEANDO CARDINALIDADES ///////////////////////////
-
+    @ToString.Exclude
     @OneToMany(mappedBy = "typePetId", cascade = CascadeType.ALL)
     private List<Pet> pets;
 

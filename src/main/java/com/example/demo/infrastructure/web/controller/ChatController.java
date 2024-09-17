@@ -7,9 +7,13 @@ import com.example.demo.infrastructure.web.projection.classBased.BookingDTO;
 import com.example.demo.infrastructure.web.projection.classBased.ChatDTO;
 import com.example.demo.infrastructure.web.projection.interfaceBased.BookingProjection;
 import com.example.demo.infrastructure.web.projection.interfaceBased.ChatProjection;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +25,17 @@ import java.util.Optional;
 public class ChatController {
 
     private final ChatService chatService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
-    // Endpoint para registrar Chat
+    // Método que va a recibir la información que se envie de nuestro web-socket
+    @MessageMapping("/chat.sendMessage")
+    public void handleWebSocketMessage(@Payload ChatDTO chatDTO) {
+        ChatDTO registeredChat = chatService.registerChatService(chatDTO);
+        simpMessagingTemplate.convertAndSend("/topic/room/" + chatDTO.getRoomId(), registeredChat);
+    }
+
     @PostMapping("/register")
-    public ResponseEntity<ChatDTO> registerChat(@RequestBody ChatDTO chatDTO){
+    public ResponseEntity<ChatDTO> registerChatHttp(@RequestBody ChatDTO chatDTO) {
         ChatDTO registeredChat = chatService.registerChatService(chatDTO);
         return ResponseEntity.ok(registeredChat);
     }
@@ -61,6 +72,13 @@ public class ChatController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Was not possible delete the Chat");
         }
+    }
+
+    // Endpoint para mostrar las conversaciones de una sala
+    @GetMapping("/showChatForRoom/{roomId}")
+    public ResponseEntity<List<ChatProjection>> getAllChatByRoomId(@PathVariable("roomId")Integer id){
+        List<ChatProjection> chat = chatService.showAllChatByRoomIdService(id);
+        return ResponseEntity.ok(chat);
     }
 
 }

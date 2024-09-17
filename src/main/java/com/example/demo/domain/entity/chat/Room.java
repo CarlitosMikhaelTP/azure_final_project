@@ -7,10 +7,7 @@ import com.example.demo.domain.entity.transaction.TypeTransaction;
 import com.example.demo.domain.entity.user.User;
 import com.example.demo.domain.entity.walker.Walker;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -57,6 +54,7 @@ public class Room {
     private Room updatedBy;
 
     // Definiendo la cardinalidad
+    @ToString.Exclude
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<Chat> chatList;
 

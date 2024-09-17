@@ -1,6 +1,6 @@
 package com.example.demo.domain.serviceImpl.CommentCalification;
 
-import com.example.demo.application.exceptions.CalificationCommentExceptions.CalificationCommentNotFoundException;
+import com.example.demo.application.exceptions.CommentWalkerExceptions.CommentWalkerNotFoundException;
 import com.example.demo.application.exceptions.WalkExceptions.NotFound.WalkNotFoundException;
 import com.example.demo.application.service.CommentCalificationService.CommentCalificationService;
 import com.example.demo.domain.entity.commentCalification.CommentCalification;
@@ -54,7 +54,7 @@ public class CommentCalificationServiceImpl implements CommentCalificationServic
     @Override
     public CommentCalificationDTO editCommentCalificationService(Integer id, CommentCalificationDTO commentCalificationDTO) {
         CommentCalification commentCalificationExists = commentCalificationRepository.findById(id)
-                .orElseThrow(()-> new CalificationCommentNotFoundException("Id de calificacion y comentario no encontrados"));
+                .orElseThrow(()-> new CommentWalkerNotFoundException("Id de calificacion y comentario no encontrados"));
         Walk walk = commentCalificationExists.getWalkId();
         if (commentCalificationDTO.getWalkId() != null){
             walk = walkRepository.findById(commentCalificationDTO.getWalkId())
@@ -97,7 +97,7 @@ public class CommentCalificationServiceImpl implements CommentCalificationServic
     @Override
     public boolean deleteCommentCalificationById(Integer id) {
         CommentCalification commentCalification = commentCalificationRepository.findById(id)
-                .orElseThrow(()-> new CalificationCommentNotFoundException("Id de la califiacion y comentario no encontrado"));
+                .orElseThrow(()-> new CommentWalkerNotFoundException("Id de la califiacion y comentario no encontrado"));
         commentCalificationRepository.delete(commentCalification);
         System.out.println("Se eliminó correctamente la calificacion y comentario del paseo");
         return true;

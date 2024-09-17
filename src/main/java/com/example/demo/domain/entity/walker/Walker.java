@@ -1,11 +1,9 @@
 package com.example.demo.domain.entity.walker;
 
+import com.example.demo.domain.entity.comment.CommentWalker;
 import com.example.demo.domain.entity.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -85,10 +83,15 @@ public class Walker {
 
     //@OneToMany(mappedBy = "walker", cascade = CascadeType.ALL)
     //private List<Booking> booking;
-
+    @ToString.Exclude
     @OneToOne(mappedBy = "walkerId", cascade = CascadeType.ALL)
     private LocationWalker locationWalker;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "walkerId", cascade = CascadeType.ALL)
     private List<RatingWalker> ratingWalkerList;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "walkerId", cascade = CascadeType.ALL)
+    private List<CommentWalker> commentWalkerList;
 }

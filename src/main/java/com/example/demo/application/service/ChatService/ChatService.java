@@ -16,4 +16,8 @@ public interface ChatService {
     Optional<ChatProjection> showChatByIdService(Integer id);
 
     boolean deleteChatById(Integer id);
+
+    // Definiendo un método para mostar todos el chat de una sala entre paseador
+    // y un dueño de la mascota
+    List<ChatProjection> showAllChatByRoomIdService(Integer roomId);
 }

@@ -1,33 +1,27 @@
-package com.example.demo.domain.serviceImpl.Chat;
+package com.example.demo.domain.serviceImpl.CommentWalker;
 
-import com.example.demo.application.exceptions.BookingExceptions.NotFound.BookingNotFoundException;
+import com.example.demo.application.exceptions.CommentWalkerExceptions.CommentWalkerNotFoundException;
 import com.example.demo.application.exceptions.ChatExceptions.NotFound.ChatNotFoundException;
 import com.example.demo.application.exceptions.ChatExceptions.NotFound.RoomNotFoundException;
 import com.example.demo.application.exceptions.ChatExceptions.NotFound.TypeMessageNotFoundException;
-import com.example.demo.application.exceptions.OwnerExceptions.NotFound.OwnerNotFoundException;
 import com.example.demo.application.exceptions.UserExceptions.NotFound.UserNotFoundException;
+import com.example.demo.application.exceptions.WalkExceptions.NotFound.WalkNotFoundException;
 import com.example.demo.application.exceptions.WalkerExceptions.NotFound.WalkerNotFoundException;
-import com.example.demo.application.service.BookingService.BookingService;
-import com.example.demo.application.service.ChatService.ChatService;
-import com.example.demo.domain.entity.booking.Booking;
+import com.example.demo.application.service.CommentWalkerService.CommentWalkerService;
 import com.example.demo.domain.entity.chat.Chat;
 import com.example.demo.domain.entity.chat.Room;
 import com.example.demo.domain.entity.chat.TypeMessage;
-import com.example.demo.domain.entity.owner.Owner;
+import com.example.demo.domain.entity.comment.CommentWalker;
 import com.example.demo.domain.entity.user.User;
+import com.example.demo.domain.entity.walk.Walk;
 import com.example.demo.domain.entity.walker.Walker;
-import com.example.demo.domain.repository.Booking.BookingRepository;
-import com.example.demo.domain.repository.Chat.ChatRepository;
-import com.example.demo.domain.repository.Chat.RoomRepository;
-import com.example.demo.domain.repository.Chat.TypeMessageRepository;
-import com.example.demo.domain.repository.Chat.TypeRoomRepository;
-import com.example.demo.domain.repository.Owner.OwnerRepository;
+import com.example.demo.domain.repository.Comment.CommentWalkerRepository;
 import com.example.demo.domain.repository.User.UserRepository;
+import com.example.demo.domain.repository.Walk.WalkRepository;
 import com.example.demo.domain.repository.Walker.WalkerRepository;
-import com.example.demo.infrastructure.web.projection.classBased.BookingDTO;
-import com.example.demo.infrastructure.web.projection.classBased.ChatDTO;
-import com.example.demo.infrastructure.web.projection.interfaceBased.BookingProjection;
+import com.example.demo.infrastructure.web.projection.classBased.CommentWalkerDTO;
 import com.example.demo.infrastructure.web.projection.interfaceBased.ChatProjection;
+import com.example.demo.infrastructure.web.projection.interfaceBased.CommentWalkerProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,112 +30,105 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ChatServiceImpl implements ChatService {
+public class CommentWalkerServiceImpl implements CommentWalkerService {
 
-    private final ChatRepository chatRepository;
-    private final RoomRepository roomRepository;
-    private final TypeMessageRepository typeMessageRepository;
+    private final CommentWalkerRepository commentWalkerRepository;
+    private final WalkerRepository walkerRepository;
+    private final WalkRepository walkRepository;
     private final UserRepository userRepository;
 
     // Implementando el servicio para realizar los chats
     @Override
-    public ChatDTO registerChatService(ChatDTO chatDTO) {
+    public CommentWalkerDTO registerCommentWalkerService(CommentWalkerDTO commentWalkerDTO) {
 
 
-        Room room = roomRepository.findById(chatDTO.getRoomId())
-                .orElseThrow(()-> new RoomNotFoundException("Id de la sala no encontrado"));
+        Walker walker = walkerRepository.findById(commentWalkerDTO.getWalkerId())
+                .orElseThrow(()-> new WalkerNotFoundException("Id del paseador no encontrado"));
 
-        TypeMessage typeMessage = typeMessageRepository.findById(chatDTO.getTypeMessageId())
-                .orElseThrow(()-> new TypeMessageNotFoundException("Id del tipo de mensaje no encontrado"));
+        Walk walk = walkRepository.findById(commentWalkerDTO.getWalkId())
+                .orElseThrow(()-> new WalkNotFoundException("Id del tipo de paseo no encontrado"));
 
-        User user = userRepository.findById(chatDTO.getUserId())
+        User user = userRepository.findById(commentWalkerDTO.getUserId())
                 .orElseThrow(()-> new UserNotFoundException("Id del tipo de usuario no encontrado"));
 
-        Chat chat = Chat.builder()
-                .room(room)
-                .user(user)
-                .typeMessage(typeMessage)
-                .message(chatDTO.getMessage())
-                .date(chatDTO.getDate())
-                .url(chatDTO.getUrl())
+        CommentWalker commentWalker = CommentWalker.builder()
+                .walkerId(walker)
+                .walkId(walk)
+                .userId(user)
+                .comment(commentWalkerDTO.getComment())
                 .build();
 
         // Guardando los cambios haciendo uso del repositorio
-        chat = chatRepository.save(chat);
+        commentWalker = commentWalkerRepository.save(commentWalker);
 
-        return chatDTO.builder()
-                .id(chat.getId())
-                .roomId(chat.getRoom().getId())
-                .nameUser(chat.getUser().getName())
-                .userId(chat.getUser().getId())
-                .typeMessageId(chat.getTypeMessage().getId())
-                .message(chat.getMessage())
-                .date(chat.getDate())
-                .url(chat.getUrl())
+        return commentWalkerDTO.builder()
+                .id(commentWalker.getId())
+                .walkerId(commentWalker.getWalkerId().getId())
+                .walkId(commentWalker.getWalkId().getId())
+                .userId(commentWalker.getUserId().getId())
+                .comment(commentWalker.getComment())
                 .build();
     }
 
     @Override
-    public ChatDTO editChatService(Integer id, ChatDTO chatDTO) {
+    public CommentWalkerDTO editCommentWalkerService(Integer id, CommentWalkerDTO commentWalkerDTO) {
 
-        Chat chatExists = chatRepository.findById(id)
-                .orElseThrow(()-> new ChatNotFoundException("Id del chat no encontrado"));
+        CommentWalker commentWalkerExists = commentWalkerRepository.findById(id)
+                .orElseThrow(()-> new CommentWalkerNotFoundException("Id del comentario del paseador no encontrado"));
 
-        Room room = chatExists.getRoom();
-        if (chatDTO.getRoomId() != null){
-            room = roomRepository.findById(chatDTO.getRoomId())
-                    .orElseThrow(()-> new RoomNotFoundException("Id de la sala no encontrado"));
+        Walker walker = commentWalkerExists.getWalkerId();
+        if (commentWalkerDTO.getWalkId() != null){
+            walker = walkerRepository.findById(commentWalkerDTO.getWalkerId())
+                    .orElseThrow(()-> new WalkerNotFoundException("Id del paseador no encontrado"));
         }
-        TypeMessage typeMessage = chatExists.getTypeMessage();
-        if (chatDTO.getTypeMessageId() != null){
-            typeMessage =  typeMessageRepository.findById(chatDTO.getTypeMessageId())
-                    .orElseThrow(()-> new TypeMessageNotFoundException("Id del tipo de mensaje no encontrado"));
+        Walk walk = commentWalkerExists.getWalkId();
+        if (commentWalkerDTO.getWalkId() != null){
+            walk =  walkRepository.findById(commentWalkerDTO.getWalkId())
+                    .orElseThrow(()-> new WalkerNotFoundException("Id del paseo no encontrado"));
         }
-        User user = chatExists.getUser();
-        if (chatDTO.getUserId() != null){
-            user = userRepository.findById(chatDTO.getUserId())
+        User user = commentWalkerExists.getUserId();
+        if (commentWalkerDTO.getUserId() != null){
+            user = userRepository.findById(commentWalkerDTO.getUserId())
                     .orElseThrow(()-> new UserNotFoundException("Id del usuario no encontrado"));
         }
-        if (chatDTO.getMessage() != null){
-            chatExists.setMessage(chatDTO.getMessage());
-        }
-        if (chatDTO.getDate() != null){
-            chatExists.setDate(chatDTO.getDate());
-        }
-        if (chatDTO.getUrl() != null){
-            chatExists.setUrl(chatDTO.getUrl());
+        if (commentWalkerDTO.getComment() != null){
+            commentWalkerExists.setComment(commentWalkerDTO.getComment());
         }
         // Guardando campos
-        chatExists = chatRepository.save(chatExists);
+        commentWalkerExists = commentWalkerRepository.save(commentWalkerExists);
 
-        return chatDTO.builder()
-                .id(chatExists.getId())
-                .roomId(chatExists.getRoom().getId())
-                .userId(chatExists.getUser().getId())
-                .nameUser(chatExists.getUser().getName())
-                .typeMessageId(chatExists.getTypeMessage().getId())
-                .message(chatExists.getMessage())
-                .date(chatExists.getDate())
-                .url(chatExists.getUrl())
+        return commentWalkerDTO.builder()
+                .id(commentWalkerExists.getId())
+                .walkerId(commentWalkerExists.getWalkerId().getId())
+                .walkId(commentWalkerExists.getWalkId().getId())
+                .userId(commentWalkerExists.getUserId().getId())
+                .comment(commentWalkerExists.getComment())
                 .build();
     }
 
     @Override
-    public List<ChatProjection> showAllChatService() {
-        return chatRepository.findAllProjectedBy();
+    public List<CommentWalkerProjection> showAllCommentWalkerService() {
+        return commentWalkerRepository.findAllProjectedBy();
     }
 
     @Override
-    public Optional<ChatProjection> showChatByIdService(Integer id) {
-        return chatRepository.findProjectedById(id);
+    public Optional<CommentWalkerProjection> showCommentWalkerByIdService(Integer id) {
+        return commentWalkerRepository.findProjectedById(id);
     }
 
     @Override
-    public boolean deleteChatById(Integer id) {
-        Chat chat = chatRepository.findById(id)
-                .orElseThrow(()-> new ChatNotFoundException("Id del chat no encontrado."));
-        chatRepository.delete(chat);
+    public boolean deleteCommentById(Integer id) {
+        CommentWalker commentWalker = commentWalkerRepository.findById(id)
+                .orElseThrow(()-> new CommentWalkerNotFoundException("Id del comentario no encontrado."));
+        commentWalkerRepository.delete(commentWalker);
         System.out.println("Se eliminó correctamente el chat");
         return true;
+    }
+
+    @Override
+    public List<CommentWalkerProjection> showAllCommentsByWalkerIdService(Integer walkerId) {
+        Walker walker = walkerRepository.findById(walkerId)
+                .orElseThrow(() -> new WalkerNotFoundException("Id del paseador no encontrado"));
+        return commentWalkerRepository.findAllByWalkerId(walker);
     }
 }

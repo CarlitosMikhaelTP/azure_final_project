@@ -6,10 +6,7 @@ import com.example.demo.domain.entity.walker.Walker;
 import com.example.demo.domain.entity.owner.Owner;
 import com.example.demo.domain.entity.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalTime;
@@ -72,9 +69,11 @@ public class Booking {
 
     ////////////// Mapeando cardinalidades //////////////////////
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "bookingId", cascade = CascadeType.ALL)
     private Walk walk;
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
     private Room room;
 

@@ -12,8 +12,10 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000","https://api-uywalky-htb2bpd4bkaqfvau.eastus-01.azurewebsites.net")
-                .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
+                .allowedOriginPatterns("*")
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*");
+                //.allowCredentials(true);
     }
 }

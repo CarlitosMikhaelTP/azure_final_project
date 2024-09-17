@@ -29,6 +29,11 @@ public class LocationWalkerServiceImpl implements LocationWalkerService {
     public LocationWalkerDTO registerLocationWalkerService(LocationWalkerDTO locationWalkerDTO) {
         Walker walker = walkerRepository.findById(locationWalkerDTO.getId())
                 .orElseThrow(()-> new WalkerNotFoundException("Id del paseador no encontrado"));
+        // Lógica para verificar si el pasedor tiene activado su campo de "availability"
+        if (!walker.getAvailability()){ // evalua si el paseador está no disponible es decir si está como false, si está como false entonces lanza l aexcepción
+            throw new WalkerNotFoundException("El paseador no está habilitado para esta funcionalidad");
+        }
+
         // Lógica para verificar si la locación del paseador ya tiene un ID de paseador asignado
         if (locationWalkerRepository.existsByWalkerId(walker)){
             throw new LocationWalkerExistException("Esta locación ya tiene un Id de paseador vinculado");
