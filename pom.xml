@@ -101,23 +101,43 @@
             </exclude> 
           </excludes> 
         </configuration> 
-      </plugin>  
-      <plugin> 
-        <groupId>com.microsoft.azure</groupId>  
-        <artifactId>azure-webapp-maven-plugin</artifactId>  
+      </plugin>
+      <plugin>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-webapp-maven-plugin</artifactId>
         <version>2.12.0</version>
-		  <configuration>
-			  <resourceGroup>group02</resourceGroup> <!-- Reemplaza con tu grupo de recursos -->
-			  <appName>api-uywalky</appName> <!-- Reemplaza con el nombre de tu aplicación -->
-			  <pricingTier>B1</pricingTier> <!-- Puedes usar F1 para el plan gratuito o B1 para una versión básica -->
-			  <region>eastus</region> <!-- Reemplaza con la región de tu App Service -->
-			  <runtime>
-				  <os>linux</os>
-				  <javaVersion>17</javaVersion>
-				  <webContainer>Java SE</webContainer>
-			  </runtime>
-		  </configuration>
-      </plugin> 
+        <configuration>
+          <!-- Grupo de recursos -->
+          <resourceGroup>uywalky_group</resourceGroup>
+
+          <!-- Nombre de la aplicación -->
+          <appName>uywalky</appName>
+
+          <!-- Plan de precios -->
+          <pricingTier>F1</pricingTier>
+
+          <!-- Región del App Service -->
+          <region>canadacentral</region>
+
+          <!-- Configuración de tiempo de ejecución -->
+          <runtime>
+            <os>windows</os>
+            <javaVersion>17</javaVersion>
+            <webContainer>Java SE</webContainer>
+          </runtime>
+
+          <!-- Información de despliegue -->
+          <deployment>
+            <resources>
+              <resource>
+                <directory>${project.build.directory}</directory>
+                <targetPath></targetPath>
+              </resource>
+            </resources>
+          </deployment>
+        </configuration>
+      </plugin>
+
     </plugins> 
   </build> 
 </project>
