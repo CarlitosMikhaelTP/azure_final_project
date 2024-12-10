@@ -56,6 +56,8 @@ public class WalkServiceImpl implements WalkService {
                 .comment(walk.getComment())
                 //.calification(walkDTO.getCalification())
                 .cost(walk.getCost())
+                .nameOwner(walk.getBookingId().getOwnerId().getUserId().getName())
+                .nameWalker(walk.getBookingId().getWalkerId().getUserId().getName())
                 .build();
     }
 

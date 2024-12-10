@@ -59,4 +59,8 @@ public class BookingDTO {
     @NotNull(message = "El id de Propietario no puede ser nula")
     @NotBlank(message = "El id del Propietario no puede estar vacía")
     private Integer id;
+
+    private String nameOwner;
+
+    private String nameWalker;
 }

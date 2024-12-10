@@ -53,6 +53,8 @@ public class BookingServiceImpl implements BookingService {
         Integer IdOwner = booking.getOwnerId().getId();
         Integer IdWalker = booking.getWalkerId().getId();
         Double Cost = booking.getCost();
+        String nameOwner = booking.getOwnerId().getUserId().getName();
+        String nameWalker = booking.getWalkerId().getUserId().getName();
 
         return BookingDTO.builder()
                 .id(IdBooking)
@@ -64,6 +66,8 @@ public class BookingServiceImpl implements BookingService {
                 .comment(bookingDTO.getComment())
                 .meetingPoint(bookingDTO.getMeetingPoint())
                 .placeWalk(bookingDTO.getPlaceWalk())
+                .nameWalker(nameWalker)
+                .nameOwner(nameOwner)
                 .build();
     }
 
@@ -112,6 +116,7 @@ public class BookingServiceImpl implements BookingService {
                 .comment(bookingExists.getComment())
                 .meetingPoint(bookingExists.getMeetingPoint())
                 .placeWalk(bookingExists.getPlaceWalk())
+
                 .build();
     }
 

@@ -56,4 +56,7 @@ public class WalkDTO {
     private Integer ownerId;
     private Integer walkerId;
 
+    private String nameWalker;
+    private String nameOwner;
+
 }

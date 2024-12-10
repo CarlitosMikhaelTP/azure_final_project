@@ -17,6 +17,12 @@ public interface WalkProjection {
     @Value("#{target.bookingId.id}")
     Integer getBookingId();
 
+    @Value("#{target.bookingId.ownerId.userId.name}")
+    String getNameOwner();
+
+    @Value("#{target.bookingId.walkerId.userId.name}")
+    String getNameWalker();
+
     @JsonFormat(pattern = "yyy-MM-dd")
     Timestamp getStart();
 

@@ -16,6 +16,11 @@ public interface BookingProjection {
     @Value("#{target.ownerId.id}")
     Integer getOwnerId();
 
+    @Value("#{target.ownerId.userId.name}")
+    String getNameOwner();
+
+    @Value("#{target.walkerId.userId.name}")
+    String getNameWalker();
     @Value("#{target.walkerId.id}")
     Integer getWalkerId();
 
