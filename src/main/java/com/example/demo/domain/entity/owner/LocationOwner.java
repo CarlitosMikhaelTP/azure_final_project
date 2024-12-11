@@ -27,10 +27,10 @@ public class LocationOwner {
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner ownerId;
 
-    @Column(name = "latitude", precision = 10, scale = 8, nullable = false)
+    @Column(name = "latitude", precision = 30, scale = 10, nullable = false)
     private BigDecimal latitude;
 
-    @Column(name = "lenght", nullable = false, precision = 10, scale = 8)
+    @Column(name = "lenght", nullable = false, precision = 30, scale = 10)
     private BigDecimal lenght;
 
     @Column(name = "state", columnDefinition = "TINYINT DEFAULT 1", nullable = false)

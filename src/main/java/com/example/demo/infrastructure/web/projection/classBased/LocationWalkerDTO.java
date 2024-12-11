@@ -25,12 +25,10 @@ public class LocationWalkerDTO {
 
     @NotNull(message = "La latitud no puede ser nula")
     @NotBlank(message = "La latitud no puede estar vacía")
-    @Digits(integer = 38, fraction = 7, message = "La tarifa debe tener un máximo de 38 dígitos enteros y 7 decimales")
     private BigDecimal latitude;
 
     @NotNull(message = "La longitud no puede ser nula")
     @NotBlank(message = "La longitud no puede estar vacía")
-    @Digits(integer = 38, fraction = 7, message = "La tarifa debe tener un máximo de 38 dígitos enteros y 7 decimales")
     private BigDecimal lenght;
 
 

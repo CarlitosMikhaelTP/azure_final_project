@@ -27,10 +27,10 @@ public class LocationWalker {
     @JoinColumn(name = "walker_id", nullable = false)
     private Walker walkerId;
 
-    @Column(name = "latitude", precision = 10, scale = 8, nullable = false)
+    @Column(name = "latitude", precision = 30, scale = 10, nullable = false)
     private BigDecimal latitude;
 
-    @Column(name = "lenght", precision = 10, scale = 8, nullable = false)
+    @Column(name = "lenght", precision = 30, scale = 10, nullable = false)
     private BigDecimal lenght;
 
     @Column(name = "state", columnDefinition = "TINYINT DEFAULT 1")
